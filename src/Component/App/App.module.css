@@ -1,0 +1,9 @@
+.ul {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.li {
+  width: 360px;
+}

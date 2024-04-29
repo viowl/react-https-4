@@ -1,12 +1,11 @@
-export default function ImageGallery() {
+export default function ImageGallery({ items }) {
   return (
     <ul>
-      {/* Набір елементів списку із зображеннями */}
-      <li>
-        <div>
-          <img src="" alt="" />
-        </div>
-      </li>
+      {items.map((item) => (
+        <li key={item.id}>
+          <img src={item.urls.thumb} alt={item.alt_description} />
+        </li>
+      ))}
     </ul>
   );
 }
