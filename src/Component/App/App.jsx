@@ -3,23 +3,19 @@ import ImageGallery from "../ImageGallery/ImageGallery";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import css from "../App/App.module.css";
+import { fetchArticles } from "../../article-ap";
 
 export default function App() {
   const [articles, setArticles] = useState([]);
-  useEffect(() => {
-    async function getArticles() {
-      const response = await axios.get(
-        "https://api.unsplash.com/photos/?client_id=uflcuQcwbpWkYBHWWV3KgG_J0Ie4-14PU_pbD_mECdU"
-      );
-      console.log(response.data);
-      setArticles(response.data);
-    }
 
-    getArticles();
-  }, []);
+  const handleSearch = async (newQuery) => {
+    console.log(newQuery);
+    const data = await fetchArticles(newQuery);
+    setArticles(data);
+  };
   return (
     <div>
-      <SearchBar />
+      <SearchBar onSearch={handleSearch} />
       <div>{articles.length > 0 && <ImageGallery items={articles} />}</div>
     </div>
   );
