@@ -11,7 +11,7 @@ export default function App() {
   const handleSearch = async (newQuery) => {
     console.log(newQuery);
     const data = await fetchArticles(newQuery);
-    setArticles(data);
+    setArticles(data.results);
   };
   return (
     <div>

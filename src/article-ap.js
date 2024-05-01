@@ -5,8 +5,9 @@ export const fetchArticles = async (query) => {
     params: {
       query: query,
       per_page: 15,
-      client_id: "uflcuQcwbpWkYBHWWV3KgG_J0Ie4-14PU_pbD_mECdU",
+      client_id: "JPaWKYjenJwTJReunNYKAxgGxmQ5PDb5eOvxhAmCdvk",
     },
   });
+  console.log(response);
   return response.data;
 };
