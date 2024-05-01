@@ -6,7 +6,7 @@
 
 .header {
   background-color: #252caf;
-  position: fixed;
+  /* position: fixed; */
   top: 0;
   left: 0;
   box-shadow: 0 0 20px #000000;
