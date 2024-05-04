@@ -30,7 +30,8 @@ export default function App() {
       {isLoading && <Loader />}
       {error && <p className={css.p}>Oops! Error! Reload! </p>}
 
-      <div>{articles.length > 0 && <ImageGallery items={articles} />}</div>
+      {articles.length > 0 && <ImageGallery items={articles} />}
+      {articles.length > 0 && <button>Load more</button>}
     </div>
   );
 }
