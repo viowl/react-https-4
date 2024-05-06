@@ -1,7 +1,9 @@
 import SearchBar from "../SearchBar/SearchBar";
 import ImageGallery from "../ImageGallery/ImageGallery";
+import ImageModal from "../ImageModal/ImageModal";
 import { useEffect, useState } from "react";
 import css from "../App/App.module.css";
+
 import { fetchArticles } from "../../article-ap";
 import Loader from "../Loader/Loader";
 
@@ -11,13 +13,21 @@ export default function App() {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedImageUrl, setSelectedImageUrl] = useState("");
 
   useEffect(() => {
+    if (query === "") {
+      return;
+    }
     async function getData() {
       try {
-        const data = await fetchArticles(query, page);
-        setArticles(data.results);
+        setIsLoading(true);
         setError(false);
+        const data = await fetchArticles(query, page);
+        setArticles((prevArticles) => {
+          return [...prevArticles, ...data.results];
+        });
       } catch (error) {
         setError(true);
       } finally {
@@ -27,8 +37,10 @@ export default function App() {
     getData();
   }, [query, page]);
 
-  const handleSearch = async (newQuery) => {
+  const handleSearch = (newQuery) => {
     setQuery(newQuery);
+    setPage(1);
+    setArticles([]);
     console.log(newQuery);
   };
 
@@ -36,16 +48,33 @@ export default function App() {
     setPage(page + 1);
   };
 
+  const openModal = (imageUrl) => {
+    setSelectedImageUrl(imageUrl);
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
   return (
     <div>
       <SearchBar onSearch={handleSearch} />
-      {isLoading && <Loader />}
+
       {error && <p className={css.p}>Oops! Error! Reload! </p>}
 
-      {articles.length > 0 && <ImageGallery items={articles} />}
       {articles.length > 0 && (
+        <ImageGallery items={articles} openModal={openModal} />
+      )}
+      {articles.length > 0 && !isLoading && (
         <button onClick={handleLoadMore}>Load more</button>
       )}
+      <ImageModal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        imageUrl={selectedImageUrl}
+      />
+      <div className={css.loader}>{isLoading && <Loader />}</div>
     </div>
   );
 }
