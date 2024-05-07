@@ -1,6 +1,6 @@
 import SearchBar from "../SearchBar/SearchBar";
 import ImageGallery from "../ImageGallery/ImageGallery";
-import ImageModal from "../ImageModal/ImageModal";
+
 import { useEffect, useState } from "react";
 import css from "../App/App.module.css";
 
@@ -13,8 +13,6 @@ export default function App() {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedImageUrl, setSelectedImageUrl] = useState("");
 
   useEffect(() => {
     if (query === "") {
@@ -48,32 +46,16 @@ export default function App() {
     setPage(page + 1);
   };
 
-  const openModal = (imageUrl) => {
-    setSelectedImageUrl(imageUrl);
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-
   return (
     <div>
       <SearchBar onSearch={handleSearch} />
 
       {error && <p className={css.p}>Oops! Error! Reload! </p>}
 
-      {articles.length > 0 && (
-        <ImageGallery items={articles} openModal={openModal} />
-      )}
+      {articles.length > 0 && <ImageGallery items={articles} />}
       {articles.length > 0 && !isLoading && (
         <button onClick={handleLoadMore}>Load more</button>
       )}
-      <ImageModal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        imageUrl={selectedImageUrl}
-      />
       <div className={css.loader}>{isLoading && <Loader />}</div>
     </div>
   );
